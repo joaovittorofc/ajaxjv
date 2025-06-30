@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Animais - Orientação a Objetos</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; background-color: #f4f4f4; }
+    h1 { color: #333; }
+    .log { background: #fff; padding: 10px; border: 1px solid #ccc; margin-top: 20px; max-width: 600px; }
+    button { margin-right: 10px; padding: 10px; }
+  </style>
+</head>
+<body>
+  <h1>Animais - OO com JS</h1>
+  <button onclick="rex.emitirSom()">Rex (Cachorro)</button>
+  <button onclick="luna.emitirSom()">Luna (Gato)</button>
+  <button onclick="max.emitirSom()">Max (Cachorro)</button>
+
+  <div class="log" id="log"></div>
+
+  <script>
+    class Animal {
+      constructor(nome, idade) {
+        this.nome = nome;
+        this.idade = idade;
+      }
+      emitirSom() {
+        log(`${this.nome} fez um som.`);
+      }
+    }
+
+    class Cachorro extends Animal {
+      emitirSom() {
+        log(`${this.nome} latiu: Au au!`);
+      }
+    }
+
+    class Gato extends Animal {
+      emitirSom() {
+        log(`${this.nome} miou: Miau!`);
+      }
+    }
+
+    const rex = new Cachorro("Rex", 5);
+    const luna = new Gato("Luna", 3);
+    const max = new Cachorro("Max", 2);
+
+    function log(mensagem) {
+      const logDiv = document.getElementById('log');
+      const p = document.createElement('p');
+      p.textContent = mensagem;
+      logDiv.appendChild(p);
+    }
+  </script>
+</body>
+</html>
