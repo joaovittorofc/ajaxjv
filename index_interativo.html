@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Notas dos Alunos - Interativo</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; background: #f4f4f4; }
+    h1, h2 { color: #333; }
+    .form { margin-bottom: 20px; background: #fff; padding: 15px; border-radius: 6px; }
+    input, button { padding: 10px; margin-right: 10px; }
+    .aprovado { color: green; font-weight: bold; }
+    .reprovado { color: red; }
+    .resultado { background: #fff; padding: 20px; border-radius: 6px; }
+  </style>
+</head>
+<body>
+  <h1>Lançamento e Resultado de Notas</h1>
+
+  <div class="form">
+    <input type="text" id="nome" placeholder="Nome do aluno" required>
+    <input type="number" id="nota" placeholder="Nota" required>
+    <button onclick="adicionarAluno()">Adicionar</button>
+  </div>
+
+  <div class="resultado" id="resultado"></div>
+
+  <script>
+    const alunos = [];
+
+    const renderizar = () => {
+      const container = document.getElementById("resultado");
+      container.innerHTML = "";
+
+      alunos.forEach(aluno => {
+        const p = document.createElement("p");
+        p.textContent = `${aluno.nome} - Nota: ${aluno.nota}`;
+        p.className = aluno.nota >= 6 ? "aprovado" : "reprovado";
+        container.appendChild(p);
+      });
+    };
+
+    const adicionarAluno = () => {
+      const nome = document.getElementById("nome").value.trim();
+      const nota = parseFloat(document.getElementById("nota").value);
+
+      if (nome && !isNaN(nota)) {
+        alunos.push({ nome, nota });
+        renderizar();
+        document.getElementById("nome").value = "";
+        document.getElementById("nota").value = "";
+      } else {
+        alert("Preencha todos os campos corretamente.");
+      }
+    };
+  </script>
+</body>
+</html>

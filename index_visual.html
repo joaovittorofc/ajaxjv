@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Filtro de Alunos Aprovados</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; background: #f0f0f0; }
+    h1 { color: #333; }
+    .alunos { background: white; padding: 20px; border-radius: 5px; }
+    .aprovado { color: green; font-weight: bold; }
+    .reprovado { color: red; }
+  </style>
+</head>
+<body>
+  <h1>Resultado dos Alunos</h1>
+  <div class="alunos" id="resultado"></div>
+
+  <script>
+    const alunos = [
+      { nome: "Ana", nota: 8 },
+      { nome: "Bruno", nota: 5 },
+      { nome: "Carla", nota: 6 },
+      { nome: "Daniel", nota: 9 },
+      { nome: "Eduarda", nota: 4 }
+    ];
+
+    const alunosAprovados = (lista) => lista.filter(aluno => aluno.nota >= 6);
+
+    const resultado = document.getElementById("resultado");
+
+    alunos.forEach(aluno => {
+      const p = document.createElement("p");
+      p.textContent = `${aluno.nome} - Nota: ${aluno.nota}`;
+      p.className = aluno.nota >= 6 ? "aprovado" : "reprovado";
+      resultado.appendChild(p);
+    });
+  </script>
+</body>
+</html>
