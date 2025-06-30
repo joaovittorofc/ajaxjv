@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Exercício TypeScript Visual</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; }
+    input, button { padding: 8px; margin: 5px; }
+    #output { margin-top: 20px; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <h1>Funções TypeScript</h1>
+
+  <div>
+    <h2>Multiplicação</h2>
+    <input type="number" id="num1" placeholder="Número 1">
+    <input type="number" id="num2" placeholder="Número 2">
+    <button onclick="calcularMultiplicacao()">Multiplicar</button>
+  </div>
+
+  <div>
+    <h2>Saudação</h2>
+    <input type="text" id="nome" placeholder="Digite seu nome">
+    <button onclick="mostrarSaudacao()">Saudar</button>
+  </div>
+
+  <div id="output"></div>
+
+  <script>
+    function multiplicar(a, b) {
+      return a * b;
+    }
+
+    function saudacao(nome) {
+      return `Olá ${nome}`;
+    }
+
+    function calcularMultiplicacao() {
+      const n1 = parseFloat(document.getElementById("num1").value);
+      const n2 = parseFloat(document.getElementById("num2").value);
+      const resultado = multiplicar(n1, n2);
+      document.getElementById("output").textContent = `Resultado: ${resultado}`;
+    }
+
+    function mostrarSaudacao() {
+      const nome = document.getElementById("nome").value;
+      document.getElementById("output").textContent = saudacao(nome);
+    }
+  </script>
+</body>
+</html>
