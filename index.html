@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Exercício AJAX</title>
+  <link rel="stylesheet" href="main.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Lista de Convidados</h1>
+    <button id="carregar">Carregar Convidados</button>
+    <ul id="lista"></ul>
+
+    <h2>Confirmar Presença</h2>
+    <form id="formulario">
+      <input type="text" id="nome" placeholder="Digite seu nome" required />
+      <button type="submit">Confirmar</button>
+    </form>
+  </div>
+
+  <script>
+    let convidadosBase = [];
+    let confirmadosManualmente = [];
+
+    function renderizarLista() {
+      const lista = document.getElementById('lista');
+      lista.innerHTML = '';
+
+      [...convidadosBase, ...confirmadosManualmente].forEach(nome => {
+        const li = document.createElement('li');
+        li.textContent = nome;
+        lista.appendChild(li);
+      });
+    }
+
+    async function carregarConvidados() {
+      try {
+        const resposta = await fetch('dados.json');
+        if (!resposta.ok) throw new Error('Erro ao buscar os dados');
+        const dados = await resposta.json();
+        convidadosBase = dados.map(item => item.nome);
+        renderizarLista();
+      } catch (erro) {
+        console.error(erro);
+        const lista = document.getElementById('lista');
+        lista.innerHTML = '<li style="color:red;">Erro ao carregar convidados.</li>';
+        renderizarLista();
+      }
+    }
+
+    document.getElementById('carregar').addEventListener('click', carregarConvidados);
+
+    document.getElementById('formulario').addEventListener('submit', function (e) {
+      e.preventDefault();
+      const nome = document.getElementById('nome').value.trim();
+      if (nome) {
+        confirmadosManualmente.push(`${nome} (confirmado)`);
+        renderizarLista();
+        this.reset();
+      }
+    });
+  </script>
+</body>
+</html>
