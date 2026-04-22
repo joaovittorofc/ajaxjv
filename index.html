@@ -1,65 +1,213 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Exercício AJAX</title>
-  <link rel="stylesheet" href="main.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Inovou – Assessoria de Marketing Digital</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #ffffff;
+      --bg2: #f8f8fb;
+      --card: #ffffff;
+      --accent: #ff5c00;
+      --accent2: #ff9000;
+      --text: #1a1a1a;
+      --muted: #5f6170;
+      --border: rgba(26,26,26,0.12);
+      --glow: rgba(255,92,0,0.14);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Montserrat', sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 6vw;
+      height: 72px;
+      background: rgba(255,255,255,0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+    }
+    .logo {
+      font-weight: 800; font-size: 1.5rem;
+      letter-spacing: -0.03em;
+      color: var(--text);
+      text-decoration: none;
+    }
+    .logo span { color: var(--accent); }
+    .nav-links { display: flex; gap: 2.2rem; list-style: none; }
+    .nav-links a {
+      color: var(--muted); font-size: 0.88rem; font-weight: 600;
+      text-decoration: none; letter-spacing: 0.02em;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--text); }
+    .nav-cta {
+      background: var(--accent);
+      color: #fff !important;
+      padding: 0.5rem 1.3rem;
+      border-radius: 6px;
+      transition: background 0.2s !important;
+    }
+
+    .hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+      justify-content: center; align-items: flex-start;
+      padding: 120px 6vw 80px;
+      position: relative; overflow: hidden;
+      background: linear-gradient(180deg,#fff 0%, #fcfcff 100%);
+    }
+    .hero-glow {
+      position: absolute; top: -200px; right: -100px;
+      width: 700px; height: 700px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,92,0,0.10) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero h1 {
+      font-size: clamp(2.8rem, 6.5vw, 5.5rem);
+      font-weight: 800;
+      line-height: 1.04;
+      letter-spacing: -0.04em;
+      max-width: 780px;
+      margin-bottom: 1.5rem;
+    }
+    .hero h1 em { font-style: normal; color: var(--accent); }
+    .hero-sub { color: var(--muted); max-width: 520px; margin-bottom: 2.5rem; }
+    .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+      padding: 0.85rem 2rem;
+      border-radius: 8px;
+      font-weight: 600;
+      text-decoration: none;
+      border: none;
+    }
+    .btn-ghost {
+      background: transparent;
+      color: var(--text);
+      padding: 0.85rem 2rem;
+      border-radius: 8px;
+      text-decoration: none;
+      border: 1px solid var(--border);
+    }
+    .hero-stats { display: flex; gap: 3rem; margin-top: 3rem; }
+    .stat-item h3 { font-size: 2.2rem; font-weight: 800; color: var(--accent); }
+    .stat-item p { font-size: 0.82rem; color: var(--muted); }
+
+    section { padding: 90px 6vw; }
+    .section-label { color: var(--accent); font-size: 0.78rem; font-weight: 700; text-transform: uppercase; }
+    .section-title { font-size: clamp(2rem, 4vw, 3rem); font-weight: 800; margin: .8rem 0 1rem; }
+    .section-sub { color: var(--muted); max-width: 560px; margin-bottom: 2rem; }
+
+    .testimonials-section { background: var(--bg2); }
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+    .tcard {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1rem;
+    }
+    .video-wrap {
+      aspect-ratio: 16 / 9;
+      width: 100%;
+      border-radius: 10px;
+      overflow: hidden;
+      background: #000;
+      margin-bottom: 1rem;
+    }
+    .video-wrap iframe,
+    .video-wrap video {
+      width: 100%;
+      height: 100%;
+      display: block;
+      border: 0;
+    }
+    .tcard-name { font-weight: 700; font-size: 0.95rem; }
+    .tcard-role { font-size: 0.8rem; color: var(--muted); }
+
+    @media (max-width: 768px) {
+      nav { padding: 0 5vw; }
+      .nav-links { display: none; }
+      section, .hero { padding-left: 5vw; padding-right: 5vw; }
+      .hero-stats { gap: 1.5rem; flex-wrap: wrap; }
+    }
+  </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Lista de Convidados</h1>
-    <button id="carregar">Carregar Convidados</button>
-    <ul id="lista"></ul>
+<nav>
+  <a href="#" class="logo">ino<span>vou</span></a>
+  <ul class="nav-links">
+    <li><a href="#servicos">Serviços</a></li>
+    <li><a href="#resultados">Resultados</a></li>
+    <li><a href="#depoimentos">Depoimentos</a></li>
+    <li><a href="#faq">FAQ</a></li>
+    <li><a href="#contato" class="nav-cta">Falar com especialista</a></li>
+  </ul>
+</nav>
 
-    <h2>Confirmar Presença</h2>
-    <form id="formulario">
-      <input type="text" id="nome" placeholder="Digite seu nome" required />
-      <button type="submit">Confirmar</button>
-    </form>
+<section class="hero">
+  <div class="hero-glow"></div>
+  <h1>Seu faturamento pode crescer <em>até 3x</em> mais.</h1>
+  <p class="hero-sub">Somos a Inovou — especialistas em marketing digital com foco em crescimento real.</p>
+  <div class="hero-actions">
+    <a href="#contato" class="btn-primary">Aumentar meu faturamento →</a>
+    <a href="#servicos" class="btn-ghost">Conhecer os serviços</a>
   </div>
+  <div class="hero-stats">
+    <div class="stat-item"><h3>3×</h3><p>Crescimento médio</p></div>
+    <div class="stat-item"><h3>+200</h3><p>Clientes atendidos</p></div>
+    <div class="stat-item"><h3>98%</h3><p>Satisfação</p></div>
+  </div>
+</section>
 
-  <script>
-    let convidadosBase = [];
-    let confirmadosManualmente = [];
+<section class="testimonials-section" id="depoimentos">
+  <div class="section-label">Depoimentos</div>
+  <h2 class="section-title">Depoimentos em vídeo</h2>
+  <p class="section-sub">Substituímos os textos por vídeos para dar mais prova social e credibilidade.</p>
 
-    function renderizarLista() {
-      const lista = document.getElementById('lista');
-      lista.innerHTML = '';
+  <div class="testimonials-grid">
+    <div class="tcard">
+      <div class="video-wrap">
+        <iframe src="https://www.youtube.com/embed/ysz5S6PUM-U" title="Depoimento Marcos Ribeiro" allowfullscreen></iframe>
+      </div>
+      <div class="tcard-name">Marcos Ribeiro</div>
+      <div class="tcard-role">CEO · E-commerce de moda</div>
+    </div>
 
-      [...convidadosBase, ...confirmadosManualmente].forEach(nome => {
-        const li = document.createElement('li');
-        li.textContent = nome;
-        lista.appendChild(li);
-      });
-    }
+    <div class="tcard">
+      <div class="video-wrap">
+        <iframe src="https://www.youtube.com/embed/jNQXAC9IVRw" title="Depoimento Ana Cristina" allowfullscreen></iframe>
+      </div>
+      <div class="tcard-name">Ana Cristina</div>
+      <div class="tcard-role">Diretora · Clínica Odontológica</div>
+    </div>
 
-    async function carregarConvidados() {
-      try {
-        const resposta = await fetch('dados.json');
-        if (!resposta.ok) throw new Error('Erro ao buscar os dados');
-        const dados = await resposta.json();
-        convidadosBase = dados.map(item => item.nome);
-        renderizarLista();
-      } catch (erro) {
-        console.error(erro);
-        const lista = document.getElementById('lista');
-        lista.innerHTML = '<li style="color:red;">Erro ao carregar convidados.</li>';
-        renderizarLista();
-      }
-    }
-
-    document.getElementById('carregar').addEventListener('click', carregarConvidados);
-
-    document.getElementById('formulario').addEventListener('submit', function (e) {
-      e.preventDefault();
-      const nome = document.getElementById('nome').value.trim();
-      if (nome) {
-        confirmadosManualmente.push(`${nome} (confirmado)`);
-        renderizarLista();
-        this.reset();
-      }
-    });
-  </script>
+    <div class="tcard">
+      <div class="video-wrap">
+        <iframe src="https://www.youtube.com/embed/tgbNymZ7vqY" title="Depoimento Felipe Souza" allowfullscreen></iframe>
+      </div>
+      <div class="tcard-name">Felipe Souza</div>
+      <div class="tcard-role">Fundador · Consultoria B2B</div>
+    </div>
+  </div>
+</section>
 </body>
 </html>
